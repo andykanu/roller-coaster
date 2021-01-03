@@ -1,8 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib.cm as cm
-
-mycmap = cm.get_cmap(name="Paired", lut=10)
+import seaborn as sns
 
 # load rankings data here:
 wood = pd.read_csv("Golden_Ticket_Award_Winners_Wood.csv")
@@ -148,9 +146,6 @@ def scatter(df, col1, col2):
     plt.show()
 
 
-print(roller_data.head())
-print(roller_data.info())
-
 # What seating type is most popular?
 def seating_type(df):
     seat_count = (
@@ -173,5 +168,24 @@ def seating_type(df):
     plt.show()
 
 
-# next challenge is to return seating type by [numeric] - could use FacetGrid???
-seating_type(roller_data)
+# show seating type by [numeric_field]
+def seating_type_by_numeric(df, numeric):
+    seat_count = (
+        df.groupby(["seating_type", numeric])
+        .name.count()
+        .sort_values(ascending=False)
+        .reset_index()
+    )
+    g = sns.FacetGrid(
+        seat_count,
+        col="height",
+        hue="seating_type",
+        col_wrap=4,
+        height=2,
+        palette="Paired",
+    )
+    g.map(plt.scatter, "name", "height").add_legend()
+    plt.show()
+
+
+seating_type_by_numeric(roller_data, "height")
