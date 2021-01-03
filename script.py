@@ -186,6 +186,3 @@ def seating_type_by_numeric(df, numeric):
     )
     g.map(plt.scatter, "name", "height").add_legend()
     plt.show()
-
-
-seating_type_by_numeric(roller_data, "height")
